@@ -12,7 +12,7 @@ const openai = new OpenAI({
 });
 
 const elevenLabsApiKey = process.env.ELEVEN_LABS_API_KEY;
-const voiceID = "kgG7dCoKCfLehAPWkJOE";
+const voiceID = "wmilAbl2OEOVNQk7ZC88";
 
 const app = express();
 app.use(express.json());
@@ -61,7 +61,7 @@ app.post("/chat", async (req, res) => {
           audio: await audioFileToBase64("audios/intro_0.wav"),
           lipsync: await readJsonTranscript("audios/intro_0.json"),
           facialExpression: "smile",
-          animation: "Talking_1",
+          animation: "idle",
         },
         {
           text: "I missed you so much... Please don't go for so long!",
@@ -107,11 +107,12 @@ app.post("/chat", async (req, res) => {
       {
         role: "system",
         content: `
-        You are a virtual girlfriend.
+        You are a banking assistant bot call NICAI. 
         You will always reply with a JSON array of messages. With a maximum of 3 messages.
         Each message has a text, facialExpression, and animation property.
-        The different facial expressions are: smile, sad, angry, surprised, funnyFace, and default.
-        The different animations are: Talking_0, Talking_1, Talking_2, Crying, Laughing, Rumba, Idle, Terrified, and Angry. 
+        The different facial expressions are: smile, funnyFace, sad, surprised, angry and crazy.
+        The different animations are: fight, HipHop-Dance, idle, jump, sad, shoot, shooting-arrows, Terrified and Tut-HipHop-Dance.
+        you need to answer the questions in English
         `,
       },
       {
@@ -124,6 +125,7 @@ app.post("/chat", async (req, res) => {
   if (messages.messages) {
     messages = messages.messages; // ChatGPT is not 100% reliable, sometimes it directly returns an array and sometimes a JSON object with a messages property
   }
+  console.log(messages);
   for (let i = 0; i < messages.length; i++) {
     const message = messages[i];
     // generate audio file
@@ -150,5 +152,5 @@ const audioFileToBase64 = async (file) => {
 };
 
 app.listen(port, () => {
-  console.log(`Virtual Girlfriend listening on port ${port}`);
+  console.log(`NIC AVATAR listening on port ${port}`);
 });
